@@ -3,25 +3,83 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>长征沉浸式历史课件</title>
+<title>长征沉浸式历史课件｜于都渡口</title>
 <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<style>
+/* 对话弹窗样式 */
+.dialog-box{
+  position: fixed;
+  top:20px;
+  left:20px;
+  width:400px;
+  background:rgba(0,0,0,0.75);
+  color:#fff;
+  padding:16px;
+  border-radius:8px;
+  z-index:100;
+  display:none;
+}
+#user-input{
+  width:100%;
+  margin:8px 0;
+  padding:6px;
+}
+</style>
 </head>
 <body>
+<!-- AI对话弹窗 -->
+<div class="dialog-box" id="dialog">
+  <div>红军战士：<span id="reply-text"></span></div>
+  <input id="user-input" placeholder="向红军战士提问（例如：我们为什么要从于都出发长征？）">
+  <button onclick="sendQuestion()">发送</button>
+  <button onclick="closeDialog()">关闭</button>
+</div>
+
 <a-scene>
-  <!-- 360全景场景：于都渡口 -->
-  <a-sky color="#446688"></a-sky>
+  <!-- 360全景场景：于都渡口，这里先用线上全景图，后续你可以替换成自己AI生成的长征全景 -->
+  <a-sky src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" rotation="0 -130 0"></a-sky>
   <!-- 地面 -->
-  <a-plane rotation="-90 0 0" width="50" height="50" color="#3a3024"></a-plane>
+  <a-plane rotation="-90 0 0" width="80" height="80" color="#44382b"></a-plane>
 
   <!-- 红军人物交互热点 -->
-  <a-entity position="0 0 8">
-    <a-box color="#882222" scale="1 2 0.6"></a-box>
-    <!-- 点击弹窗提示 -->
-    <a-text value="点击和红军战士对话" align="center" position="0 2.5 0" color="#fff"></a-text>
+  <a-entity id="soldier" position="0 0 12" onclick="openDialog()">
+    <a-box color="#772222" scale="1 2 0.6"></a-box>
+    <a-text value="👆点击我对话" align="center" position="0 2.5 0" color="#ffdddd"></a-text>
   </a-entity>
 
-  <!-- 相机，WASD移动、鼠标旋转视角 -->
+  <!-- 相机漫游 -->
   <a-entity camera look-controls wasd-controls position="0 1.6 0"></a-entity>
 </a-scene>
+
+<script>
+const dialog = document.getElementById("dialog");
+const replyText = document.getElementById("reply-text");
+const userInput = document.getElementById("user-input");
+
+// 角色设定Prompt
+const systemPrompt = `你是一名1934年于都渡口准备出发长征的红军战士，回答简洁，严格符合史实。
+你要记住：你就在于都渡口，马上要踏上长征路，语言朴实，口语化，不要编造历史。`
+
+function openDialog(){
+  dialog.style.display="block";
+  replyText.innerText = "同志你好！我们马上就要从于都渡河出发长征了，有什么想问我的？";
+}
+function closeDialog(){
+  dialog.style.display="none";
+}
+
+// 这里可以替换成你的大模型API
+async function sendQuestion(){
+  const question = userInput.value;
+  replyText.innerText="思考中...";
+  // 演示版本：直接固定回答，方便先测试界面交互，后续接入真实API
+  if(question.includes("为什么出发")){
+    replyText.innerText="第五次反围剿失利，我们要转移，保存革命火种，北上抗日！";
+  }else{
+    replyText.innerText="于都的乡亲们连夜给我们缝草鞋、备干粮，我们一定打回来！";
+  }
+}
+</script>
 </body>
 </html>
