@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>长征沉浸式历史课件</title>
+<script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+<body>
+<a-scene>
+  <!-- 360全景场景：于都渡口 -->
+  <a-sky color="#446688"></a-sky>
+  <!-- 地面 -->
+  <a-plane rotation="-90 0 0" width="50" height="50" color="#3a3024"></a-plane>
+
+  <!-- 红军人物交互热点 -->
+  <a-entity position="0 0 8">
+    <a-box color="#882222" scale="1 2 0.6"></a-box>
+    <!-- 点击弹窗提示 -->
+    <a-text value="点击和红军战士对话" align="center" position="0 2.5 0" color="#fff"></a-text>
+  </a-entity>
+
+  <!-- 相机，WASD移动、鼠标旋转视角 -->
+  <a-entity camera look-controls wasd-controls position="0 1.6 0"></a-entity>
+</a-scene>
+</body>
+</html>
